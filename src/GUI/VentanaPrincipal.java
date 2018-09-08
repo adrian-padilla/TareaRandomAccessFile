@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 
 /**
  * Capa de inductiva
@@ -34,8 +35,14 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
     Producto producto;
     ProductoBusiness productoBusiness ;
     JMenu jMenuVentanasInternas;
+    JMenu jMenuMs;
     JMenuItem ventanaRegistro;
     JMenuItem ventanaBusqueda;
+    JMenuItem jMenuItemActualizar;
+    JMenuItem jMenuItemTerminar;
+    JSeparator jSeparadorRs;
+    JSeparator jSeparatorMs;
+    String buscarID;
     
     public VentanaPrincipal() {
     
@@ -60,21 +67,34 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
         
         this.jMenuBar = new JMenuBar();
         this.jMenuVentanasInternas = new JMenu("Open Windows");
+        this.jMenuMs = new JMenu("     ≡     ");
         this.ventanaRegistro = new JMenuItem("Registro de productos");
         this.ventanaBusqueda = new JMenuItem("Manejo de archivo");
+        this.jMenuItemActualizar = new JMenuItem("Realizar acción sobre productos");
+        this.jMenuItemTerminar = new JMenuItem("Realizar cierre");
+        this.jSeparadorRs = new JSeparator(0);
+        this.jSeparatorMs = new JSeparator(0);
         this.jDesktopPane = new JDesktopPane();
         
         this.ventanaRegistro.addActionListener(this);
         this.ventanaBusqueda.addActionListener(this);
+        this.jMenuItemActualizar.addActionListener(this);
+        this.jMenuItemTerminar.addActionListener(this);
+        this.jMenuItemTerminar.addActionListener(this);
         this.jMenuBar.add(this.jMenuVentanasInternas);
         this.getContentPane().add(this.jDesktopPane);
         this.jMenuVentanasInternas.add(this.ventanaRegistro);
         this.jMenuVentanasInternas.add(this.ventanaBusqueda);
+        this.jMenuVentanasInternas.add(this.jSeparadorRs);
+        this.jMenuVentanasInternas.add(this.jMenuMs);
+        this.jMenuMs.add(this.jMenuItemActualizar);
+        this.jMenuVentanasInternas.add(this.jSeparatorMs);
+        this.jMenuVentanasInternas.add(this.jMenuItemTerminar);
         this.jDesktopPane.add(this.nuevoID);
         this.jDesktopPane.add(this.busquedaID);
         
         this.setJMenuBar(this.jMenuBar);
-        this.jDesktopPane.setSize(791, 546);
+        this.jDesktopPane.setSize(800, 600);
         this.jDesktopPane.setBackground(Color.WHITE);
         
         
@@ -83,7 +103,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        if (e.getSource() == ventanaRegistro) {
+        if (e.getSource() == this.ventanaRegistro) {
             
             this.nuevoID.jbtnUno.addActionListener(this);
             this.nuevoID.jbtnDos.addActionListener(this);
@@ -125,28 +145,78 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
                                 
                             } catch (IOException ex) {
                                 
-                                Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(VentanaPrincipal.class.
+                                getName()).log(Level.SEVERE, null, ex);
                                 
                             }
                             try {
                                 
                                 System.out.println("Producto: " + this.
-                                        productoBusiness.getProducto(0).getProductoID()+
-                                        " Nombre: " +
-                                        this.productoBusiness.getProducto(0).getNombre() +
-                                        " Precio: " +
-                                        this.productoBusiness.getProducto(0).getPrecio());
+                                productoBusiness.getProducto(0).getProductoID()+
+                                " Nombre: " +
+                                this.productoBusiness.getProducto(0).getNombre() +
+                                " Precio: " +
+                                this.productoBusiness.getProducto(0).getPrecio());
                             
                             } catch (IOException ex) {
                                
-                                Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(VentanaPrincipal.class.
+                                getName()).log(Level.SEVERE, null, ex);
                            
+                            } catch (NullPointerException nex) {
+                                nex.getSuppressed();
                             }
                         } else {
                             if (e.getSource() == this.busquedaID.jbtnDos) {
                                 
+                                
+                                
                             } else {
                                 if (e.getSource() == this.busquedaID.jbtnTres) {
+                                    
+//                                    producto
+                                    if (JOptionPane.showConfirmDialog(this, 
+                                    "Remover el producto ", "Confirmar acción ",
+                                    JOptionPane.WARNING_MESSAGE) == 0) {
+                                        
+                                    } else {
+                                       
+                                        System.out.println("No se eliminó");
+                                    
+                                    }
+                                
+                                } else {
+                                    if (e.getSource() == this.jMenuItemActualizar) {
+                                        
+                                        String productoID = new String(JOptionPane.
+                                        showInputDialog(this, "¿Ingrese el ID del"
+                                        + " producto que busca por favor?"));
+                                        producto = new Producto(productoID, "", 0);
+                                        
+                                        try {
+                                            if (productoBusiness.isDeleted(producto)) {
+                                                
+                                                System.out.
+                                                        println("El producto ha sido encontrado");
+                                                
+                                            } else {
+                                                
+                                                System.out.
+                                                        println("El producto salió de vigencia");
+                                                
+                                            }
+                                        } catch (IOException ex) {
+                                            Logger.getLogger(VentanaPrincipal.class.
+                                            getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                    
+                                    } else {
+                                        if (e.getSource() == this.jMenuItemTerminar) {
+                                        
+                                            System.exit(0);
+                                        
+                                        }
+                                    } 
                                     
                                 }
                             }
