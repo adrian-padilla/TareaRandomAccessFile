@@ -9,7 +9,7 @@ import GUI.VentanaPrincipal;
 import javax.swing.JFrame;
 
 /**
- * 
+ * Clonado
  * @author adria
  */
 public class TareaCuatro {
